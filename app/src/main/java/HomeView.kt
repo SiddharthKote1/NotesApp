@@ -1,12 +1,12 @@
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Arrangement
+
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ExitToApp
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
@@ -37,7 +37,7 @@ fun HomeView(modifier: Modifier = Modifier) {
         topBar = {
             TopAppBar(
                 title = { Text(text = "NOTES",
-                    style = MaterialTheme.typography.titleLarge,
+                    style = MaterialTheme.typography.headlineLarge,
                     modifier=Modifier.padding(start =24.dp),
                     color=Color.Black) },
                 colors = TopAppBarDefaults.topAppBarColors(
@@ -50,7 +50,7 @@ fun HomeView(modifier: Modifier = Modifier) {
                         IconButton(onClick = {
                             // Add your exit logic here
                         },
-                            modifier=Modifier.align) {
+                            ) {//Iwas here
                             Icon(
                                 imageVector = Icons.Default.Menu,
                                 contentDescription = null,
@@ -68,7 +68,8 @@ fun HomeView(modifier: Modifier = Modifier) {
                 containerColor = MaterialTheme.colorScheme.primary) {
 
                 Text(text = "+", style = MaterialTheme.typography.displayLarge,
-                    color = MaterialTheme.colorScheme.onPrimary)
+                    color = MaterialTheme.colorScheme.onPrimary,
+                    )
             }
         }
 
