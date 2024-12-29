@@ -1,3 +1,10 @@
-package Room
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 
-data class Entitydata()
+@Entity(tableName = "Notes")
+data class Note(
+    @PrimaryKey(autoGenerate = true)
+    val id: Int = 0,
+    val title: String,
+    val content: String
+)

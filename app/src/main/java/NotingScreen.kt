@@ -1,3 +1,4 @@
+import android.widget.Toast
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
@@ -23,39 +24,52 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.compose.ui.platform.LocalContext
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
-fun NotingScreen(modifier:Modifier=Modifier) {
+fun NotingScreen(
+    modifier: Modifier = Modifier, navController: NavController,
+    viewModel: WishViewModel
+) {
     var input1 by remember { mutableStateOf("") }
     var input2 by remember { mutableStateOf("") }
+
+    val context = LocalContext.current
+
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(text = "") },
+                title = { Text(text = "ADD NOTES") },
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = MaterialTheme.colorScheme.primary,
                     titleContentColor = MaterialTheme.colorScheme.onPrimary
                 ),
                 navigationIcon = {
-                    IconButton(onClick = { /* Handle back action */ },
-                        modifier = Modifier.padding(start = 0.dp)) {
-                        Icon(imageVector = Icons.Default.ArrowBack,
-                            contentDescription = "Jump to the HomeScreen or HomeView")
+                    IconButton(onClick = { navController.popBackStack() }) {
+                        Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "Back")
                     }
-                    IconButton(onClick = { /* Handle save action */ },
-                        modifier = Modifier.padding(start = 330.dp)) {
-                        Icon(imageVector = Icons.Default.Check,
-                            contentDescription = "Saved the Note")
+                },
+                actions = {
+                    IconButton(onClick = {
+                        if (input1.isNotBlank() && input2.isNotBlank()) {
+                            val newNote = Note(title = input1, content = input2)
+                            viewModel.addNote(newNote)
+                            navController.popBackStack()
+                        } else {
+                            Toast.makeText(context, "Title and Description cannot be empty.", Toast.LENGTH_SHORT).show()
+                        }
+                    }) {
+                        Icon(imageVector = Icons.Default.Check, contentDescription = "Save Note")
                     }
                 }
             )
         }
     ) { paddingValues ->
         Column(modifier = Modifier.padding(paddingValues).fillMaxSize()) {
+            // Title TextField
             TextField(
                 value = input1,
                 onValueChange = { input1 = it },
@@ -69,24 +83,20 @@ fun NotingScreen(modifier:Modifier=Modifier) {
                 textStyle = MaterialTheme.typography.titleLarge,
                 singleLine = true
             )
+
+            // Description TextField
             TextField(
-            value = input2,
-            onValueChange = { input2 = it },
-            label = { Text("") },
-            modifier = Modifier.padding(0.dp)
-                .fillMaxWidth().fillMaxHeight(),
-            colors = TextFieldDefaults.textFieldColors(
-                containerColor = Color.Transparent,
-                focusedIndicatorColor = Color.Transparent,
-                unfocusedIndicatorColor = Color.Transparent
-            )
+                value = input2,
+                onValueChange = { input2 = it },
+                label = { Text("Description") },
+                modifier = Modifier.padding(0.dp).fillMaxWidth().fillMaxHeight(),
+                colors = TextFieldDefaults.textFieldColors(
+                    containerColor = Color.Transparent,
+                    focusedIndicatorColor = Color.Transparent,
+                    unfocusedIndicatorColor = Color.Transparent
+                )
             )
         }
     }
 }
 
-@Composable
-@Preview(showBackground = true)
-fun NotingScreenPreview() {
-    NotingScreen()
-}
