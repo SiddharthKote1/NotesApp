@@ -32,17 +32,20 @@ import androidx.compose.ui.platform.LocalContext
 @OptIn(ExperimentalMaterial3Api::class)
 fun NotingScreen(
     modifier: Modifier = Modifier, navController: NavController,
-    viewModel: WishViewModel
+    viewModel: WishViewModel,
+    //New Added
+    note:Note? = null
 ) {
-    var input1 by remember { mutableStateOf("") }
-    var input2 by remember { mutableStateOf("") }
+    var input1 by remember { mutableStateOf(note?.title ?: "") }
+    var input2 by remember { mutableStateOf(note?.content ?: "") }
 
     val context = LocalContext.current
 
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(text = "ADD NOTES") },
+                //NEW ADDED
+                title = { Text(text = if(note == null) "ADD NOTES" else "EDIT NOTES") },
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = MaterialTheme.colorScheme.primary,
                     titleContentColor = MaterialTheme.colorScheme.onPrimary
@@ -55,8 +58,17 @@ fun NotingScreen(
                 actions = {
                     IconButton(onClick = {
                         if (input1.isNotBlank() && input2.isNotBlank()) {
-                            val newNote = Note(title = input1, content = input2)
-                            viewModel.addNote(newNote)
+                            val updatedNote = Note(
+                                id=note?.id?:0,
+                                title = input1,
+                                content = input2
+                            )
+                            if(note==null){
+                                viewModel.addNote(updatedNote)
+                            }
+                            else{
+                                viewModel.updateNote(updatedNote)
+                            }
                             navController.popBackStack()
                         } else {
                             Toast.makeText(context, "Title and Description cannot be empty.", Toast.LENGTH_SHORT).show()

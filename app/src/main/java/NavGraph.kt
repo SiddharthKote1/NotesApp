@@ -29,10 +29,13 @@ fun NavGraph(navController: NavController) {
         composable("HomeView") {
             HomeView(navController = navController, notes = notes) // Pass the collected notes
         }
-        composable("NotingScreen") {
+        composable("NotingScreen/{noteId}") { backStackEntry  ->
+            val noteId = backStackEntry.arguments?.getString("noteId")?.toIntOrNull()
+            val note =notes.find {it.id==noteId}
             NotingScreen(
                 navController = navController,
-                viewModel = wishViewModel
+                viewModel = wishViewModel,
+                note=note
             )
         }
     }

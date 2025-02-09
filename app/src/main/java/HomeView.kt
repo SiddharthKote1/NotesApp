@@ -112,12 +112,13 @@ fun HomeView(
                             .border(1.dp, Color.Gray, RoundedCornerShape(12.dp))
                             .padding(16.dp)
                             .clickable {
-
+                                //New Added
+                                navController.navigate("NotingScreen/${note.id}")
                             }
                     ) {
                         // Content inside the box (e.g., title and actions)
                         Text(
-                            text = "Note Title",  // Example title text
+                            text = note.title,  // Example title text
                             style = MaterialTheme.typography.bodyLarge,
                             modifier = Modifier.padding(end = 16.dp)
                         )
