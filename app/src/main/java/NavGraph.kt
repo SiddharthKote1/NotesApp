@@ -1,5 +1,6 @@
 package com.example.notetakingapp
 
+import Note
 import NotingScreen
 import WishViewModel
 import androidx.compose.runtime.Composable
@@ -25,9 +26,13 @@ fun NavGraph(navController: NavController) {
     // Collect the notes from the StateFlow using collectAsState
     val notes = wishViewModel.notes.collectAsState().value
 
+    val onDeleteNote:(Note) ->Unit ={ note ->
+        wishViewModel.deleteNote(note)
+    }
+
     NavHost(navController = navController, startDestination = "HomeView") {
         composable("HomeView") {
-            HomeView(navController = navController, notes = notes) // Pass the collected notes
+            HomeView(navController = navController, notes = notes, onDeleteNote = onDeleteNote)
         }
         composable("NotingScreen/{noteId}") { backStackEntry  ->
             val noteId = backStackEntry.arguments?.getString("noteId")?.toIntOrNull()
@@ -36,6 +41,12 @@ fun NavGraph(navController: NavController) {
                 navController = navController,
                 viewModel = wishViewModel,
                 note=note
+            )
+        }
+        composable("NotingScreen") {
+            NotingScreen(
+                navController=navController,
+                viewModel = wishViewModel
             )
         }
     }

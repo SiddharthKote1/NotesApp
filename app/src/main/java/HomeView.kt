@@ -11,6 +11,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -35,6 +36,7 @@ val CustomOnPrimary = Color.White
 fun HomeView(
     navController: NavController,
     notes: List<Note>,
+    onDeleteNote:(Note) -> Unit
 ) {
     val context = LocalContext.current
     Scaffold(
@@ -116,12 +118,23 @@ fun HomeView(
                                 navController.navigate("NotingScreen/${note.id}")
                             }
                     ) {
-                        // Content inside the box (e.g., title and actions)
-                        Text(
-                            text = note.title,  // Example title text
-                            style = MaterialTheme.typography.bodyLarge,
-                            modifier = Modifier.padding(end = 16.dp)
-                        )
+                        Row(modifier=Modifier.fillMaxWidth()) {
+                            Text(
+                                text = note.title,  // Example title text
+                                style = MaterialTheme.typography.bodyLarge,
+                                modifier = Modifier.padding(end = 16.dp)
+                                    .weight(1f)
+                            )
+                            IconButton(onClick = {
+                                onDeleteNote(note)
+                            }) {
+                                Icon(
+                                    imageVector = Icons.Filled.Delete,
+                                    contentDescription = "Delete the note",
+                                    tint = Color.Black,
+                                )
+                            }
+                        }
                     }
                 }
             }
@@ -130,17 +143,32 @@ fun HomeView(
 
     @Composable
     fun Design() {
+        // Simulating a simple deletion function for preview purposes
+        val onDeleteNote: (Note) -> Unit = { note ->
+            // No action for preview, just a placeholder
+            println("Deleted note: ${note.title}")
+        }
+
+        // Example empty notes list
+        val notes = listOf<Note>()
+
+        // Apply custom color scheme
         val customColorScheme = MaterialTheme.colorScheme.copy(
             primary = CustomPrimary,
             onPrimary = CustomOnPrimary
         )
+
+        // Wrap the HomeView with the custom MaterialTheme and pass the necessary parameters
         MaterialTheme(colorScheme = customColorScheme) {
             HomeView(
                 navController = rememberNavController(),
-                notes = listOf()
-            )  // Empty list for preview
+                notes = notes,
+                onDeleteNote = onDeleteNote // Pass the delete function here
+            )
         }
     }
 }
+
+
 
 
