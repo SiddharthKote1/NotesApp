@@ -3,15 +3,20 @@ package com.example.notetakingapp.ui.screens
 import Note
 import android.widget.Toast
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -66,7 +71,11 @@ fun HomeView(
             FloatingActionButton(onClick = {
                 navController.navigate("NotingScreen")
             }, containerColor = MaterialTheme.colorScheme.primary) {
-                Text(text = "+", style = MaterialTheme.typography.displayLarge, color = MaterialTheme.colorScheme.onPrimary)
+                Text(
+                    text = "+",
+                    style = MaterialTheme.typography.displayLarge,
+                    color = MaterialTheme.colorScheme.onPrimary
+                )
             }
         }
     ) { paddingValues ->
@@ -90,32 +99,47 @@ fun HomeView(
                         .padding(top = 200.dp)
                 )
             }
-            LazyColumn(modifier = Modifier.fillMaxSize().padding(horizontal = 20.dp, vertical = 10.dp)) {
+            LazyColumn(
+                modifier = Modifier.fillMaxSize().padding(horizontal = 20.dp, vertical = 10.dp)
+            ) {
                 items(notes) { note ->
-                    Text(
-                        text = note.title, // Assuming `Note` has a `title` field
-                        style = MaterialTheme.typography.bodyLarge,
-                        modifier = Modifier.padding(vertical = 10.dp)
-                    )
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(8.dp)
+                            .clip(RoundedCornerShape(12.dp))
+                            .background(Color(0xFFF0F0F0))
+                            .border(1.dp, Color.Gray, RoundedCornerShape(12.dp))
+                            .padding(16.dp)
+                            .clickable {
+
+                            }
+                    ) {
+                        // Content inside the box (e.g., title and actions)
+                        Text(
+                            text = "Note Title",  // Example title text
+                            style = MaterialTheme.typography.bodyLarge,
+                            modifier = Modifier.padding(end = 16.dp)
+                        )
+                    }
                 }
             }
         }
     }
-}
 
-@Composable
-fun Design() {
-    val customColorScheme = MaterialTheme.colorScheme.copy(
-        primary = CustomPrimary,
-        onPrimary = CustomOnPrimary
-    )
-    MaterialTheme(colorScheme = customColorScheme) {
-        HomeView(navController = rememberNavController(), notes = listOf())  // Empty list for preview
+    @Composable
+    fun Design() {
+        val customColorScheme = MaterialTheme.colorScheme.copy(
+            primary = CustomPrimary,
+            onPrimary = CustomOnPrimary
+        )
+        MaterialTheme(colorScheme = customColorScheme) {
+            HomeView(
+                navController = rememberNavController(),
+                notes = listOf()
+            )  // Empty list for preview
+        }
     }
 }
 
-@Composable
-@Preview(showBackground = true)
-fun HomeViewPreview() {
-    Design()
-}
+
