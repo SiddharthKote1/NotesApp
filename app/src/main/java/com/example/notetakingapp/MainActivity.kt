@@ -17,7 +17,6 @@ class MainActivity : ComponentActivity() {
     private lateinit var firebaseAnalytics: FirebaseAnalytics
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(true)
 
         FirebaseCrashlytics.getInstance().log("MainActivity Crashlytics")
