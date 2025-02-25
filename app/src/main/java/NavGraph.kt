@@ -11,9 +11,10 @@ import androidx.navigation.compose.rememberNavController
 import androidx.compose.runtime.collectAsState
 import androidx.navigation.NavController
 import com.example.notetakingapp.ui.screens.HomeView
+import com.google.firebase.analytics.FirebaseAnalytics
 
 @Composable
-fun NavGraph(navController: NavController) {
+fun NavGraph(navController: NavController,firebaseAnalytics: FirebaseAnalytics) {
     val navController = rememberNavController() // Initialize NavController
 
     // Get Notes DAO instance from Singleton
@@ -32,7 +33,9 @@ fun NavGraph(navController: NavController) {
 
     NavHost(navController = navController, startDestination = "HomeView") {
         composable("HomeView") {
-            HomeView(navController = navController, notes = notes, onDeleteNote = onDeleteNote)
+            HomeView(navController = navController, notes = notes,
+                onDeleteNote = onDeleteNote,
+                firebaseAnalytics=firebaseAnalytics)
         }
         composable("NotingScreen/{noteId}") { backStackEntry  ->
             val noteId = backStackEntry.arguments?.getString("noteId")?.toIntOrNull()
@@ -40,13 +43,15 @@ fun NavGraph(navController: NavController) {
             NotingScreen(
                 navController = navController,
                 viewModel = wishViewModel,
-                note=note
+                note=note,
+                firebaseAnalytics=firebaseAnalytics
             )
         }
         composable("NotingScreen") {
             NotingScreen(
                 navController=navController,
-                viewModel = wishViewModel
+                viewModel = wishViewModel,
+                firebaseAnalytics=firebaseAnalytics
             )
         }
     }

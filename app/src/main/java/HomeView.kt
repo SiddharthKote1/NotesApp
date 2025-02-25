@@ -1,6 +1,7 @@
 package com.example.notetakingapp.ui.screens
 
 import Note
+import android.os.Bundle
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -15,6 +16,7 @@ import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -27,6 +29,9 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.notetakingapp.R
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.ktx.analytics
+import com.google.firebase.ktx.Firebase
 
 val CustomPrimary = Color(0xFF87CEEB)
 val CustomOnPrimary = Color.White
@@ -36,8 +41,15 @@ val CustomOnPrimary = Color.White
 fun HomeView(
     navController: NavController,
     notes: List<Note>,
-    onDeleteNote:(Note) -> Unit
+    onDeleteNote:(Note) -> Unit,
+    firebaseAnalytics: FirebaseAnalytics
 ) {
+    LaunchedEffect(Unit) {
+        val bundle= Bundle().apply{
+            putString(FirebaseAnalytics.Param.SCREEN_NAME,"HomeView")
+        }
+        firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SCREEN_VIEW,bundle)
+    }
     val context = LocalContext.current
     Scaffold(
         topBar = {
@@ -140,7 +152,6 @@ fun HomeView(
             }
         }
     }
-
     @Composable
     fun Design() {
         // Simulating a simple deletion function for preview purposes
@@ -163,7 +174,8 @@ fun HomeView(
             HomeView(
                 navController = rememberNavController(),
                 notes = notes,
-                onDeleteNote = onDeleteNote // Pass the delete function here
+                onDeleteNote = onDeleteNote,
+                firebaseAnalytics=firebaseAnalytics
             )
         }
     }

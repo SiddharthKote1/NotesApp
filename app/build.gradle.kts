@@ -3,6 +3,8 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     id("kotlin-kapt")
+    alias(libs.plugins.google.gms.google.services)
+    alias(libs.plugins.google.firebase.crashlytics)
 }
 
 
@@ -44,6 +46,9 @@ android {
 dependencies {
     implementation("androidx.room:room-runtime:2.6.1")
     implementation(libs.androidx.constraintlayout)
+    implementation(libs.firebase.auth)
+    implementation(libs.firebase.analytics)
+    implementation(libs.firebase.crashlytics)
     kapt("androidx.room:room-compiler:2.6.1")
     implementation("androidx.room:room-ktx:2.6.1")
 

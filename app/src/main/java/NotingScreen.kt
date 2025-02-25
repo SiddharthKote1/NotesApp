@@ -1,3 +1,4 @@
+import android.os.Bundle
 import android.widget.Toast
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -18,6 +19,7 @@ import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -27,15 +29,22 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.compose.ui.platform.LocalContext
+import com.google.firebase.analytics.FirebaseAnalytics
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
 fun NotingScreen(
     modifier: Modifier = Modifier, navController: NavController,
     viewModel: WishViewModel,
-    //New Added
-    note:Note? = null
+    note:Note? = null,
+    firebaseAnalytics: FirebaseAnalytics
 ) {
+    LaunchedEffect(Unit) {
+        val bundle= Bundle().apply{
+            putString(FirebaseAnalytics.Param.SCREEN_NAME,"NotingScreen")
+        }
+        firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SCREEN_VIEW,bundle)
+    }
     var input1 by remember { mutableStateOf(note?.title ?: "") }
     var input2 by remember { mutableStateOf(note?.content ?: "") }
 
@@ -44,8 +53,7 @@ fun NotingScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                //NEW ADDED
-                title = { Text(text = if(note == null) "ADD NOTES" else "EDIT NOTES") },
+                title = { Text(text = if(note == null) "ADD NOTES" else "EDIT NOTE") },
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = MaterialTheme.colorScheme.primary,
                     titleContentColor = MaterialTheme.colorScheme.onPrimary
