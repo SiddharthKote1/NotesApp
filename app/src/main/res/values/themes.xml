@@ -2,4 +2,10 @@
 <resources>
 
     <style name="Theme.NoteTakingApp" parent="android:Theme.Material.Light.NoActionBar" />
+    <style name="Theme.App.SplashScreen" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">#FFF8E1</item>
+        <item name="windowSplashScreenAnimatedIcon">@raw/lottie</item>
+        <item name="postSplashScreenTheme">@style/Theme.NoteTakingApp</item>
+    </style>
+
 </resources>
