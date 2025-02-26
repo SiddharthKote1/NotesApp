@@ -99,13 +99,12 @@ fun HomeView(
                     painter = painterResource(id = R.drawable.notes_images),
                     contentDescription = "Notes Image",
                     modifier = Modifier
-                        .padding(top = 150.dp, start = 80.dp)
+                       // .padding(top = 150.dp, start = 80.dp)
                         .align(Alignment.Center)
                         .height(250.dp)
                         .width(250.dp),
                     contentScale = ContentScale.Crop
                 )
-
                 Text(
                     text = "No notes available",
                     style = MaterialTheme.typography.bodyLarge,
