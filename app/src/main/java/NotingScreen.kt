@@ -5,7 +5,9 @@ import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.result.launch
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -15,9 +17,13 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Create
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -35,6 +41,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
@@ -92,7 +99,7 @@ fun NotingScreen(
 
     var input1 by remember { mutableStateOf(note?.title ?: "") }
     var input2 by remember { mutableStateOf(note?.content ?: "") }
-
+    var expanded by remember {mutableStateOf(false)}
 
     Scaffold(
         topBar = {
@@ -132,19 +139,29 @@ fun NotingScreen(
             )
         },
         floatingActionButton = {
-            Row(modifier = Modifier.padding(16.dp)) {
-                FloatingActionButton(
-                    onClick = { cameraLauncher.launch() },
-                    containerColor = MaterialTheme.colorScheme.primary
-                ) {
-                    Icon(imageVector = Icons.Default.Check, contentDescription = "Camera")
+            Column(modifier = Modifier.padding(16.dp),
+                horizontalAlignment = Alignment.End,
+                verticalArrangement = Arrangement.spacedBy(8.dp)){
+                AnimatedVisibility(visible=expanded) {
+                    FloatingActionButton(onClick = {
+                        cameraLauncher.launch()
+                    }) {
+                        Icon(imageVector = Icons.Default.Favorite, contentDescription = null)
+                    }
                 }
-                Spacer(modifier = Modifier.width(16.dp))
-                FloatingActionButton(
-                    onClick = { galleryLauncher.launch("image/*") },
-                    containerColor = MaterialTheme.colorScheme.secondary
-                ) {
-                    Icon(imageVector = Icons.Default.Create, contentDescription = "Gallary")
+                AnimatedVisibility(visible=expanded) {
+                    FloatingActionButton(onClick={
+                        galleryLauncher.launch("image")
+                    }) {
+                        Icon(imageVector=Icons.Default.Share , contentDescription=null)
+                    }
+                }
+                FloatingActionButton(onClick={
+                    expanded=!expanded
+
+                }) {
+                    Icon(imageVector = if(expanded) Icons.Default.Close else Icons.Default.Add,
+                        contentDescription = null)
                 }
             }
         }

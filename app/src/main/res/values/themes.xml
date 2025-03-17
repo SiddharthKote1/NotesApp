@@ -6,6 +6,7 @@
         <item name="windowSplashScreenBackground">#FFF8E1</item>
         <item name="windowSplashScreenAnimatedIcon">@raw/lottie</item>
         <item name="postSplashScreenTheme">@style/Theme.NoteTakingApp</item>
+
     </style>
 
 </resources>

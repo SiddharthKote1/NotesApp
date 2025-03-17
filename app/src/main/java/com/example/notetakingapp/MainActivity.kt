@@ -36,7 +36,7 @@ class MainActivity : ComponentActivity() {
         firebaseAnalytics = Firebase.analytics
 
         setContent {
-            NoteTakingAppTheme {
+            NoteTakingAppTheme() {
                 var showSplash by remember { mutableStateOf(true) }
 
                 // Splash screen delay
